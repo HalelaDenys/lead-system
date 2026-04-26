@@ -50,7 +50,7 @@ class Security:
         if exp is None:
             raise exc.InvalidTokenException
 
-        exp_dt = datetime.fromtimestamp(float(exp), tz=timezone.utc)
+        exp_dt = datetime.fromtimestamp(exp, tz=timezone.utc)
 
         if exp_dt < datetime.now(timezone.utc):
             raise exc.TokenExpiredException
