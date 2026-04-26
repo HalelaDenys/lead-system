@@ -10,4 +10,4 @@ if TYPE_CHECKING:
 class Offer(Base):
     name: Mapped[str] = mapped_column(VARCHAR(255), nullable=False)
 
-    offer: Mapped[list["Lead"]] = relationship("Lead", back_populates="offer")
+    leads: Mapped[list["Lead"]] = relationship("Lead", back_populates="offer")

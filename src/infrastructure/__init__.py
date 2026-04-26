@@ -6,6 +6,7 @@ __all__ = [
     "Affiliate",
     "Offer",
     "Lead",
+    "BaseSqlalchemyRepo",
 ]
 
 # DB
@@ -14,6 +15,7 @@ from infrastructure.db.models.base import Base
 from infrastructure.db.models.affiliate import Affiliate
 from infrastructure.db.models.offer import Offer
 from infrastructure.db.models.lead import Lead
+from infrastructure.db.base_repo import BaseSqlalchemyRepo
 
 # Redis
 from infrastructure.redis.client import redis_client
