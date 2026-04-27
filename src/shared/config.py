@@ -82,6 +82,12 @@ class LoggingConfig(BaseModel):
         return logging.getLevelNamesMapping()[self.log_level.upper()]
 
 
+class PrefixConfig(BaseModel):
+    api_v1: str = "/api/v1"
+    landings: str = "/landings"
+    core: str = "/core"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(BASE_DIR / ".env",),
@@ -95,6 +101,7 @@ class Settings(BaseSettings):
     midd: MiddlewareConfig
     jwt: JWTConfig
     logging: LoggingConfig = LoggingConfig()
+    prefix: PrefixConfig = PrefixConfig()
 
 
 settings = Settings()

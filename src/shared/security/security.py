@@ -39,21 +39,21 @@ class Security:
                 algorithms=[settings.jwt.algorithm],
             )
         except jwt.ExpiredSignatureError:
-            raise exc.TokenExpiredException
+            raise exc.TokenExpiredException("Token expired")
         except jwt.InvalidTokenError:
-            raise exc.InvalidTokenException
+            raise exc.InvalidTokenException("Invalid token")
 
     @staticmethod
     def validate_exp(payload: dict) -> dict:
         exp = payload.get("exp")
 
         if exp is None:
-            raise exc.InvalidTokenException
+            raise exc.InvalidTokenException("Invalid token")
 
         exp_dt = datetime.fromtimestamp(exp, tz=timezone.utc)
 
         if exp_dt < datetime.now(timezone.utc):
-            raise exc.TokenExpiredException
+            raise exc.TokenExpiredException("Token expired")
 
         return payload
 
@@ -62,6 +62,6 @@ class Security:
         sub = payload.get("sub")
 
         if not sub:
-            raise exc.InvalidTokenException
+            raise exc.InvalidTokenException("Invalid token")
 
         return SubTokenPayloadDTO(sub=UUID(sub))
