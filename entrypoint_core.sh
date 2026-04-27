@@ -7,8 +7,5 @@ until pg_isready -h "${APP_CONFIG__DB__HOST}" -U "${APP_CONFIG__DB__USER}" -d "$
   sleep 1
 done
 
-echo "Postgres is ready! Running migrations..."
-uv run python -m alembic -c src/alembic.ini upgrade head
-
 echo "Starting Core API..."
 exec uv run python src/core_service/main.py

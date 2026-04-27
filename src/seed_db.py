@@ -1,23 +1,15 @@
 #!/usr/bin/env python3
-"""
-Seed the database with sample affiliates and offers, then print JWT tokens.
-
-Usage:
-    DATABASE_URL=postgresql+asyncpg://... python scripts/seed_db.py
-"""
+"""Seed the database with sample affiliates and offers, then print JWT tokens."""
 
 import asyncio
-import sys
-import os
 
-
-from infrastructure import Affiliate, Offer
+from infrastructure import Affiliate, Offer, db_helper, redis_client
 from infrastructure.db.db_helper import DBHelper
 from infrastructure.redis.client import RedisClient
 from shared import Security, SubTokenPayloadDTO, settings
 
 
-async def seed(session, redis_client):
+async def seed(session):
     affiliates = [
         Affiliate(name="WebMaster Alpha"),
         Affiliate(name="WebMaster Beta"),
@@ -49,17 +41,17 @@ async def seed(session, redis_client):
 
 
 async def main():
-    redis_client = RedisClient(settings.redis.test_dsn)
+    # redis_client = RedisClient(settings.redis.dsn)
     await redis_client.connect()
-    db_helper = DBHelper(
-        url=settings.db.test_dsn,
-        echo=settings.db.alchemy_config.echo,
-        echo_pool=settings.db.alchemy_config.echo_pool,
-        pool_size=settings.db.alchemy_config.pool_size,
-        max_overflow=settings.db.alchemy_config.max_overflow,
-    )
+    # db_helper = DBHelper(
+    #     url=settings.db.dsn,
+    #     echo=settings.db.alchemy_config.echo,
+    #     echo_pool=settings.db.alchemy_config.echo_pool,
+    #     pool_size=settings.db.alchemy_config.pool_size,
+    #     max_overflow=settings.db.alchemy_config.max_overflow,
+    # )
     async with db_helper._async_session_maker() as session:
-        await seed(session, redis_client)
+        await seed(session)
 
     await redis_client.close()
 

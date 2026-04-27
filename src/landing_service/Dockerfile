@@ -22,6 +22,7 @@ COPY src/alembic /app/src/alembic
 COPY src/infrastructure /app/src/infrastructure
 COPY src/shared /app/src/shared
 COPY src/landing_service /app/src/landing_service
+COPY src/seed_db.py /app/src/seed_db.py
 COPY entrypoint.sh /app/entrypoint.sh
 
 RUN chmod +x /app/entrypoint.sh
