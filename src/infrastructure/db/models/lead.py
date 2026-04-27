@@ -1,7 +1,8 @@
 from infrastructure import Base
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from sqlalchemy import VARCHAR, ForeignKey, Index
+from sqlalchemy import VARCHAR, ForeignKey, Index, UUID
 from typing import TYPE_CHECKING
+from uuid import UUID as PyUUID
 
 if TYPE_CHECKING:
     from infrastructure import Affiliate, Offer
@@ -12,12 +13,15 @@ class Lead(Base):
     phone: Mapped[str] = mapped_column(VARCHAR(20), nullable=False)
     country: Mapped[str] = mapped_column(VARCHAR(50), nullable=False)
 
-    offer_id: Mapped[int] = mapped_column(
+    offer_id: Mapped[PyUUID] = mapped_column(
+        UUID(as_uuid=True),
         ForeignKey("offers.id"),
         nullable=False,
     )
-    affiliate_id: Mapped[int] = mapped_column(
-        ForeignKey("affiliates.id"), nullable=False
+    affiliate_id: Mapped[PyUUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("affiliates.id"),
+        nullable=False,
     )
 
     __table_args__ = (
