@@ -49,6 +49,13 @@ class PostgresConfig(BaseModel):
             f"{self.host}:{self.port}/{self.db}"
         )
 
+    @property
+    def test_dsn(self) -> str:
+        return (
+            f"postgresql+asyncpg://{self.user}:{self.password}@"
+            f"localhost:{self.port}/{self.db}"
+        )
+
 
 class RedisConfig(BaseModel):
     host: str
@@ -58,6 +65,10 @@ class RedisConfig(BaseModel):
     @property
     def dsn(self) -> str:
         return f"redis://{self.host}:{self.port}/{self.db}"
+
+    @property
+    def test_dsn(self) -> str:
+        return f"redis://localhost:{self.port}/{self.db}"
 
 
 class JWTConfig(BaseModel):
@@ -90,7 +101,10 @@ class PrefixConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(BASE_DIR / ".env",),
+        env_file=(
+            BASE_DIR / ".env.exapmle",
+            BASE_DIR / ".env",
+        ),
         env_prefix="APP_CONFIG__",
         env_nested_delimiter="__",
         case_sensitive=False,
